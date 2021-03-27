@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request
 # from db_connector.db_connector import connect_to_database, execute_query
-from datetime import datetime 
+# from datetime import datetime 
 app = Flask(__name__)
 # index
 @app.route("/")
