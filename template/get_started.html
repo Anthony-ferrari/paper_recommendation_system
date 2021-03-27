@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+        <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <title>Get Started</title>
+</head>
+<body>
+    <div class="d-flex">
+        <div class="p-2"><a class="py-1 d-none d-md-inline-block" href="Home">Emoticon</a></div>
+        <div class="p-2"><a class="py-1 d-none d-md-inline-block" href="MyData">My Data</a></div>
+        <div class="ml-auto p-2"><a class="py-1 d-none d-md-inline-block" href="MyData">Log In</a></div>
+    </div>
+    <section class="text-center">
+        <div class="container">
+            <div class="container">
+                <h3 class="exampleHeading">Getting Started...</h3>
+                <br>
+                <p class="lead text-muted">
+                    Busca Papeles is a website made for people looking to find similar research articles based on the one they upload onto our site.
+                </p>
+                <p class="lead text-muted">
+                    <ol>
+                        <li> You can check to see if the research article you currently have is in our database. If it is, then select it and click on process to get the list of research articles similar to the one selected. </li>
+                        <li>You can make save any article in the results lists by clicking on the save button after you create an account with us. You will be able to see your saved articles in the "My Data" tab. </li>
+                    </ol>
+
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- <div class="justify-content-center mt-3">
+        <div class="container">
+
+
+        </div>
+    </div> -->
+    <div class="justify-content-center mt-3">
+        <div class="container">
+            <h3>Search for a Specific Research Paper Title:</h3>
+            <form method="POST" id="filtered_research_paper_title">
+            <label>Research Paper Title:</label>
+            <input type="text" class = "search_by_paper_title" id="search_by_paper_title" name = "search_by_paper_title" placeholder="Paper Title" required pattern="[a-zA-Z]+" minlength="1">
+            <button class="submitButton" id="submit_paper_title" name = "search_by_paper">Submit</button>
+            <!-- handle non NULL return value in the backend and auto process the search result-->
+            </form>
+
+            <br>
+            <br>
+
+            <form method="POST" id="upload_paper">
+                <input type="file" id="new_paper" name="new_paper">
+                <input type="submit" value="Process">
+            </form>
+
+            <br>
+            <br>
+
+            <h3>Results:</h3>
+
+            <div id="results">
+            <p id="search_reslts">A table will be dynamically populated here as the results from the searches above. (similar format with below tables)</p>
+            </div>
+            <table class="table">
+                <thead>
+                    <th>Paper Title</th>
+                    <th>Paper Score</th>
+                </thead>
+                <tbody>
+                    <!-- {% for c in filteredCustomer %}
+                    <tr>
+                        <td>{{c[0]}}</td>
+                        <td>{{c[4]}}</td>
+                        <td>{{c[5]}}</td>
+                        <td>{{c[3]}}</td>
+						<td>{{c[1]}}</td>
+                        <td>{{c[2]}}</td>
+                        <td>{{c[6]}}</td>
+                    </tr>
+                    {% endfor %}-->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+
+
+</body>
+</html>
