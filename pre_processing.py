@@ -1,6 +1,8 @@
 # importing module to read PDFs
 import PyPDF2 
 
+#get titles of each paper
+from PyPDF2 import PdfFileReader
 #import counter to count num of words in our 
 from collections import Counter
 
@@ -13,90 +15,66 @@ import os
 #import string to create remove puctuation function
 import string
 
-#create counter with stopwords
-stopwords = Counter(['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd", 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers', 'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', "don't", 'should', "should've", 'now', 'd', 'll', 'm', 'o', 're', 've', 'y', 'ain', 'aren', "aren't", 'couldn', "couldn't", 'didn', "didn't", 'doesn', "doesn't", 'hadn', "hadn't", 'hasn', "hasn't", 'haven', "haven't", 'isn', "isn't", 'ma', 'mightn', "mightn't", 'mustn', "mustn't", 'needn', "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 'wasn', "wasn't", 'weren', "weren't", 'won', "won't", 'wouldn', "wouldn't"])
-print(stopwords)
+def get_pdf_title(pdf_list):
+		all_titles_list = []
+    for pdf in pdf_list:
+      pdf_reader = PdfFileReader(open(pdf_file_path, "rb")) 
+    	all_titles_list.append(str(pdf_reader.getDocumentInfo().title))
+    return all_titles_list
 
-#finding files within pdfs folder
-papers = []
+def get_pdf_content(pdfs):
+  '''Input: pdf_name (str)
+     Output: list of words per page
+     [[content for pdf1], [content for pdf2]]
+  '''
+  	
+    all_pdf_content = []
+    
+    
+    for pdf in pdfs:
+      # creating a pdf file object 
+      pdfFileObj = open(pdf, 'rb') 
+
+      # creating a pdf reader object 
+      pdfReader = PyPDF2.PdfFileReader(pdfFileObj) 
+
+
+      #get number of pages in the pdf file 
+      n = pdfReader.numPages
+
+      #create a list that will hold all words 
+      content = []
+
+      #loop though each page to each words from each page
+      for i in range(n):
+          #create page object
+          pageObj = pdfReader.getPage(i) 
+
+          # extracting text from page
+          content.append(pageObj.extractText())
+
+      # closing the pdf file object 
+      pdfFileObj.close() 
+
+      #return our num of words 
+      all_pdf_content.append(content[0])
+    
+    return all_pdf_content
+
+def merge_content_titles(list_pdf_content,list_pdf_titles):
+  length = len(list_pdf_content)
+  res = {}
+  for idx in range(length):
+    res[list_pdf_titles[idx]] = list_pdf_content[idx]
+  return res
+
+all_pdfs = []
 for root, dirs, files in os.walk("./pdfs"):
     for filename in files:
-        papers.append(filename)
-print(papers)
-
-def get_num_of_words(pdf):
-  '''Input: pdf_name (str)
-     Output: list of words per page
-  '''
-    # creating a pdf file object 
-    pdfFileObj = open(pdf, 'rb') 
-      
-    # creating a pdf reader object 
-    pdfReader = PyPDF2.PdfFileReader(pdfFileObj) 
-
-
-    #get number of pages in the pdf file 
-    n = pdfReader.numPages
-
-    #create a list that will hold all words 
-    num_of_words = []
-
-    #loop though each page to each words from each page
-    for i in range(n):
-        #create page object
-        pageObj = pdfReader.getPage(i) 
-      
-        # extracting text from page
-        num_of_words.append(pageObj.extractText())
-      
-    # closing the pdf file object 
-    pdfFileObj.close() 
-
-    #return our num of words 
-    return num_of_words
-
+        all_pdfs.append("./pdfs/" + filename)
+        
 #create list of all words for our paper 
-number_of_words = get_num_of_words('kotas_paper.pdf')
-print(len(number_of_words))
-
-#create list for second paper 
-number_of_words1 = get_num_of_words('kotas_paper1.pdf')
-
-#create directionary with common symbol distortions
-distortions = {"˜":"ff","ˇ":"ff","˝":"fi","˚":"fl"}
-
-#linear time replace function
-def faster_replace(number_of_words_string):
-  '''Input: pdf_name (str)
-     Output: list of words per page
-  '''
-  cleaned_string = []
-  for char in number_of_words_string:
-    if char in distortions:
-      cleaned_string.append(distortions[char])
-    else:
-      cleaned_string.append(char)
-  return cleaned_string
-
-#clean up data
-def clean_data(number_of_words):
-  unclean = ''.join(number_of_words)
-  return faster_replace(unclean)
-
-#function to remove any non_essential words
-def remove_stopwords(clean_text):
-  return [word for word in clean_text if word not in stopwords]
-
-#create directionary of punctutation to speed up run time from linear to constant
-punct = Counter(string.punctuation)
-
-#remove punctuation
-def remove_punctuation(cleaned_text):
-  return [char for char in cleaned_text if char not in punct]
-
-#create a dictionary with the number of words 
-def create_word_counter(clean_pdf):
-  joint_words = ' '.join(clean)
-  joint_words.lower()
-  split_words = joint_words.split()
-  return Counter(split_words)
+list_pdf_content = get_pdf_content(all_pdfs) 
+list_pdf_titles = get_pdf_title(all_pdfs)
+corpus = merge_content_titles(list_pdf_content, list_pdf_title)
+m_content = list(corpus.values())
