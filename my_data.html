@@ -30,9 +30,9 @@
           Sessions
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          {% for c in session %}
-          <option value= "{{c[0]}}" name="session" >{{c[0]}}</option>
-          {% endfor %}
+          <a class="dropdown-item" href="#">Session1</a>
+          <a class="dropdown-item" href="#">Session2</a>
+          <a class="dropdown-item" href="#">Session3</a>
         </div>
       </div>
       
@@ -42,7 +42,7 @@
             <th>Paper Score</th>
         </thead>
         <tbody>
-            {% for c in sessions %}
+            <!-- {% for c in filteredCustomer %}
             <tr>
                 <td>{{c[0]}}</td>
                 <td>{{c[4]}}</td>
@@ -52,7 +52,7 @@
                 <td>{{c[2]}}</td>
                 <td>{{c[6]}}</td>
             </tr>
-            {% endfor %}
+            {% endfor %}-->
         </tbody>
     </table>
       
